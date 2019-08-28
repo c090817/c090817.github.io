@@ -1823,7 +1823,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #604298;
+  background: #fffae3;
 }
 .links-of-author-item {
   text-align: center;
@@ -2993,4 +2993,23 @@ pre .javascript .function {
   .post-body {
     text-align: justify;
   }
+}
+@media screen and (min-width: 1200px) {
+  body {
+    background-image: url("/images/timg.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: 50% 50%;
+    background-size: cover;
+  }
+  #footer a {
+    color: #eee;
+  }
+}
+.main-inner {
+  background: #fff;
+  opacity: 0.8;
+}
+.header-inner {
+  opacity: 0.8;
 }
