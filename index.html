@@ -253,7 +253,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://c090817.github.io/2019/08/28/日常/">
+    <link itemprop="mainEntityOfPage" href="http://c090817.github.io/2019/11/29/关于python打包遇到的一些坑/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="乱心架刑">
@@ -272,7 +272,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/08/28/日常/" itemprop="url">日常</a></h1>
+                <a class="post-title-link" href="/2019/11/29/关于python打包遇到的一些坑/" itemprop="url">关于python打包成exe文件遇到的一些问题与解决</a></h1>
         
 
         <div class="post-meta">
@@ -284,8 +284,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-28T00:00:00+08:00">
-                2019-08-28
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-29T00:00:00+08:00">
+                2019-11-29
               </time>
             
 
@@ -307,8 +307,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/日常/" itemprop="url" rel="index">
-                    <span itemprop="name">日常</span>
+                  <a href="/categories/心得/" itemprop="url" rel="index">
+                    <span itemprop="name">心得</span>
                   </a>
                 </span>
 
@@ -346,7 +346,50 @@
       
         
           
-            <p>没价值的东西，为了看看分类是不是好用专门分出一页</p>
+            <p>首先有一个需要打包的python文件<br>使用工具为：pyinstaller<br>以下是从问题产生到解决的全过程</p>
+<p>发现问题<br>ModuleNotFoundError: No module named ‘xlrd’<br>[17300] Failed to execute script grid</p>
+<p>产生原因 依赖包’xlrd’没有引入<br>检查环境变量<br>D:\python<br>在\Lib\site-packages下  传入<br>xlrd<br>无效<br>——————————————————————<br>猜测是路径错误<br>导入这个路径原因是<br>untitled包此文件位于<br>C:\Users\natur\PycharmProjects\untitled\venv\Lib\site-packages\xlrd</p>
+<p>——————————————————————<br>网上写方法的人难道都不需要引入第三方包？</p>
+<p>CSDN有人说<br>——————————————————————————————<br>以下引用：<br>2: 将待打包的py文件放到Python安装路径的Scripts下。<br>??注意Scripts放置Python的各种第三方扩展包，这里的pyinstaller.exe在此处。<br>——————————————————————————————————<br>经查询尝试手动引入<br>测试<br>将grid.py 以及untitled\venv\Lib\site-packages<br>移动到这里<br>就是将做好的文件和需要使用的依赖包存放到python安装的地方</p>
+<p>使用管理员打开cmd重试<br>打包成功</p>
+<p>打开失败<br>报错<br>ModuleNotFoundError: No module named ‘view’</p>
+<p>手动引入’view’等其他文件</p>
+<p>删除打包文件重新打包<br>打包成功<br>程序大小<br>29896kb<br>打开失败<br>FileNotFoundError: [WinError 3] 系统找不到指定的路径。: ‘to_be_merged_file/‘</p>
+<p>将exe复制到scripts目录下 重新打开</p>
+<p>此时依然出现问题<br>——————————————————————————————————————————————————————<br>[‘天气数据（初步整理后数据，缺大兴、亦庄开发区和机场数据）-0613提供 (自动保存的).xlsx’]<br>Traceback (most recent call last):<br>  File “grid.py”, line 10, in <module><br>    root =Tk()<br>  File “tkinter\tix.py”, line 214, in <strong>init</strong><br>_tkinter.TclError: can’t find package Tix<br>[18784] Failed to execute script grid<br>——————————————————————————————</module></p>
+<p>这个问题的原因是 tkinter\tix.py没找到</p>
+<p>我寻找了一下tix.py的位置 明显在<br>C:\Users\natur\PycharmProjects\untitled\venv\Lib\site-packages\future\moves\tkinter</p>
+<p>C:\Users\natur\PycharmProjects\untitled\venv\Scripts\site-packages\future\moves\tkinter</p>
+<p>路径里有<br>先尝试把tkinter转存到Scripts\site-packages 下<br>执行<br>pyinstaller -F grid.py<br>执行exe失败</p>
+<p>  File “grid.py”, line 10, in <module><br>    root =Tk()<br>  File “tkinter\tix.py”, line 214, in <strong>init</strong><br>_tkinter.TclError: can’t find package Tix</module></p>
+<p>将 tkinter文件夹移动到dist文件夹下 失败<br>解决方案：</p>
+<p>这个问题比较难解决 很多论坛解法都是错的<br>缺少的文件夹实际上不是tkinter\tix.py而是我环境下的\python\tcl\tix8.4.3 </p>
+<p>将文件移动到dist文件夹下 执行成功</p>
+<p>移动到桌面打开成功 </p>
+<p>到这里就已经成功了，但是需要测试 在其他机器上是否能运行</p>
+<p>重新打包将CMD框去掉并使用ico<br>pyinstaller -F -w  -i C:\Users\natur\PycharmProjects\untitled\venv\Scripts\res\accident.ico  grid.py<br>双击打开成功<br>图标只在中等图标的时候为选定的ico图片</p>
+<p>修改图标为18x16<br>？再打开的时候变成想要的图标了   可能需要时间读取<br>问题先跳过 </p>
+<p>测试在虚拟机中执行<br>不是有效的32位程序<br>且图标不可用</p>
+<p>修改刚刚的图标不变问题<br>换成18x16的ico文件重新打包并压缩保存<br>这次没有延迟</p>
+<p>打32位的包</p>
+<p>——————————————————————<br>查了下 没什么好的办法  搭一个新python环境吧</p>
+<p>选择使用<br>构建32位python环境方法</p>
+<p>换python环境变量 下载32位python<br>在32位Python下载pip<br>重新下载第三方包</p>
+<p>安装更新pip<br>19.0.3→19.1.1</p>
+<p>安装<br>xlwt<br>xlrd<br>pandas<br>pyinstaller安装</p>
+<p>尝试打包</p>
+<p>————————————<br>打包成功<br>启动成功</p>
+<p>修改启动不打开cmd 修改图标<br>重新打包<br>打包语句<br>pyinstaller -F -w  -i C:\Users\natur\Desktop\tkinter32bit\accident.ico  grid.py</p>
+<p>pyinstaller -F -w  -i C:\Users\natur\Desktop\tkinter32bit\res\accident.ico grid.py</p>
+<p>打包成功</p>
+<p>打开成功</p>
+<p>导入windows xp虚拟机<br>启动测试</p>
+<p>报错<br>无法定位程序输入点 GetFinalPathNameByHandleW 于动态链接库 KERNEL32.DLL上</p>
+<p>尝试 在win7系统使用<br>搭建win7环境</p>
+<p>win7环境 搭建<br>1、要把光驱接口设定为ide<br>2、不能和xp一样使用微型系统分区 或者直接使用快速分区 先进入PQ分区工具设置虚拟磁盘<br>3、建立pq执行安装后回到ghost界面安装<br>4、再次进入PQ分区工具进行下面的设置，在磁盘状态设置为作用，<br>参考<br><a href="https://blog.csdn.net/u012230668/article/details/81701893" target="_blank" rel="noopener">https://blog.csdn.net/u012230668/article/details/81701893</a></p>
+<p>建议使用纯净版系统<br>按照教程安装华硕 GHOST WIN7 SP1 X86 电脑城装机版 V2019.06 (32位)<br>不成功<br>同时安装三个系统 成功一个<br>系统地址<br>//<a href="http://www.xitongzhijia.net/win7/201906/157779.html" target="_blank" rel="noopener">http://www.xitongzhijia.net/win7/201906/157779.html</a><br>安装vmtool  重启并导入</p>
+<p>进行测试  成功</p>
+<p>题外话：时隔半年回忆这个问题，解决起来还是费了点时间的，主要是查资料的时候，中文搜索引擎上充斥着重复的内容，你爬我我抓你的以讹传讹，或者说只有大网站的文字才能显示在人前<br>最后我是用谷歌，在pyinstaller的issue里查到的，老实说怪麻烦的，而且按照中文引擎的德行我也不知道这篇文字会不会有人看见。。。<br>要是能帮其他人提供些参考就好了 </p>
 
           
         
@@ -528,6 +571,148 @@
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://c090817.github.io/2019/08/28/日常/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="乱心架刑">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="前世">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/28/日常/" itemprop="url">日常</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-28T00:00:00+08:00">
+                2019-08-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/日常/" itemprop="url" rel="index">
+                    <span itemprop="name">日常</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>没价值的东西，为了看看分类是不是好用专门分出一页</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
@@ -576,7 +761,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -587,7 +772,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
