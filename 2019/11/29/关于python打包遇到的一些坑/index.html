@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="首先有一个需要打包的python文件使用工具为：pyinstaller以下是从问题产生到解决的全过程 发现问题ModuleNotFoundError: No module named ‘xlrd’[17300] Failed to execute script grid 产生原因 依赖包’xlrd’没有引入检查环境变量D:\python在\Lib\site-packages下  传入xlrd无效—">
+<meta name="description" content="首先有一个需要打包的python文件使用工具为：pyinstaller以下是从问题产生到解决的全过程 发现问题ModuleNotFoundError: No module named ‘xlrd’[17300] Failed to execute script grid 产生原因 依赖包’xlrd’没有引入检查环境变量D:\python在\Lib\site-packages下  传入xlrd无效">
 <meta name="keywords" content="keywords">
 <meta property="og:type" content="article">
 <meta property="og:title" content="关于python打包成exe文件遇到的一些问题与解决">
 <meta property="og:url" content="http://c090817.github.io/2019/11/29/关于python打包遇到的一些坑/index.html">
 <meta property="og:site_name" content="前世">
-<meta property="og:description" content="首先有一个需要打包的python文件使用工具为：pyinstaller以下是从问题产生到解决的全过程 发现问题ModuleNotFoundError: No module named ‘xlrd’[17300] Failed to execute script grid 产生原因 依赖包’xlrd’没有引入检查环境变量D:\python在\Lib\site-packages下  传入xlrd无效—">
+<meta property="og:description" content="首先有一个需要打包的python文件使用工具为：pyinstaller以下是从问题产生到解决的全过程 发现问题ModuleNotFoundError: No module named ‘xlrd’[17300] Failed to execute script grid 产生原因 依赖包’xlrd’没有引入检查环境变量D:\python在\Lib\site-packages下  传入xlrd无效">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-11-29T21:55:14.952Z">
+<meta property="og:updated_time" content="2019-11-29T22:02:15.807Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于python打包成exe文件遇到的一些问题与解决">
-<meta name="twitter:description" content="首先有一个需要打包的python文件使用工具为：pyinstaller以下是从问题产生到解决的全过程 发现问题ModuleNotFoundError: No module named ‘xlrd’[17300] Failed to execute script grid 产生原因 依赖包’xlrd’没有引入检查环境变量D:\python在\Lib\site-packages下  传入xlrd无效—">
+<meta name="twitter:description" content="首先有一个需要打包的python文件使用工具为：pyinstaller以下是从问题产生到解决的全过程 发现问题ModuleNotFoundError: No module named ‘xlrd’[17300] Failed to execute script grid 产生原因 依赖包’xlrd’没有引入检查环境变量D:\python在\Lib\site-packages下  传入xlrd无效">
 
 
 
@@ -344,7 +344,9 @@
       
         <p>首先有一个需要打包的python文件<br>使用工具为：pyinstaller<br>以下是从问题产生到解决的全过程</p>
 <p>发现问题<br>ModuleNotFoundError: No module named ‘xlrd’<br>[17300] Failed to execute script grid</p>
-<p>产生原因 依赖包’xlrd’没有引入<br>检查环境变量<br>D:\python<br>在\Lib\site-packages下  传入<br>xlrd<br>无效<br>——————————————————————<br>猜测是路径错误<br>导入这个路径原因是<br>untitled包此文件位于<br>C:\Users\natur\PycharmProjects\untitled\venv\Lib\site-packages\xlrd</p>
+<p>产生原因 依赖包’xlrd’没有引入<br>检查环境变量<br>D:\python<br>在\Lib\site-packages下  传入<br>xlrd<br>无效 </p>
+<a id="more"></a>
+<p>——————————————————————<br>猜测是路径错误<br>导入这个路径原因是<br>untitled包此文件位于<br>C:\Users\natur\PycharmProjects\untitled\venv\Lib\site-packages\xlrd</p>
 <p>——————————————————————<br>网上写方法的人难道都不需要引入第三方包？</p>
 <p>CSDN有人说<br>——————————————————————————————<br>以下引用：<br>2: 将待打包的py文件放到Python安装路径的Scripts下。<br>??注意Scripts放置Python的各种第三方扩展包，这里的pyinstaller.exe在此处。<br>——————————————————————————————————<br>经查询尝试手动引入<br>测试<br>将grid.py 以及untitled\venv\Lib\site-packages<br>移动到这里<br>就是将做好的文件和需要使用的依赖包存放到python安装的地方</p>
 <p>使用管理员打开cmd重试<br>打包成功</p>
